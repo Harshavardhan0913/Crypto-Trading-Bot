@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Watchlist</title>
+    <link rel="stylesheet" href="./static/CSS/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<script language="JavaScript">
+    //setTimeout(auto_submit, 5000)
+    //function show_element()   {
+    //    alert(document.watchlist.binance_elements.value)
+    //}
+
+    function add_binance_symbol_to_table(){
+        document.watchlist.binance_symbols.value +=  document.watchlist.binance_elements.value + '_'
+        var table = document.getElementById('elements_table');
+        var row = table.insertRow(1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = document.watchlist.binance_elements.value;
+        cell2.innerHTML = 'Binance';
+        cell3.innerHTML = '';
+        cell4.innerHTML = '';
+
+    }
+
+    function add_bitmex_symbol_to_table(){
+        document.watchlist.bitmex_symbols.value +=  document.watchlist.bitmex_elements.value + '_'
+        var table = document.getElementById('elements_table');
+        var row = table.insertRow(1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = document.watchlist.bitmex_elements.value;
+        cell2.innerHTML = 'Bitmex';
+        cell3.innerHTML = '';
+        cell4.innerHTML = '';
+    }
+    function remove_element(symbol){
+        document.getElementById(symbol).remove()
+
+    }
+    function auto_submit(){
+
+        document.getElementById("watchlist").submit();
+        return 0;
+    }
+</script>
+    <div class="topnav">
+        <a href="/home">Home</a>
+        <a class="active" href="/watchlist_component">WatchList</a>
+        <a href="/strategies_component">Strategies</a>
+        <a href="/logging_component">Logs</a>
+        <a href="/trades_component">Trades</a>
+        <div class="topnav-right">
+            <a href="/profile">Profile</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <form name="watchlist" id="watchlist" action="/watchlist_component" method="POST">
+
+            <label for="binance_elements">Choose Binance Token</label>
+            <select name="binance_elements" id="binance_elements">
+                {% for element in binance.contracts.keys() %}
+                <option value="{{ element }}">{{ element }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="binance_symbols" id="binance_symbols" value = "{{ binance_elements }}" >
+            <button type="submit" class="btn btn-primary" name="add_element" value="add_element" onclick="add_binance_symbol_to_table()">Add Element</button>
+
+            <label for="bitmex_elements">Choose Bitmex Token</label>
+            <select  name="bitmex_elements" id="bitmex_elements">
+                {% for element in bitmex.contracts.keys() %}
+                <option value="{{ element }}">{{ element }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="bitmex_symbols" id="bitmex_symbols"  value= "{{ bitmex_elements }}">
+            <button type="submit" class="btn btn-primary" name="add_element" value="add_element" onclick="add_bitmex_symbol_to_table()">Add Element</button>
+
+            <button type="submit" class="btn btn-primary" name="refresh" value="refresh" >Refresh</button>
+        </form>
+
+    </div>
+    <br>
+    <div class="container" style="background-color:#E7E9EB;">
+    <form name="watchlist_elements" id="watchlist_elements" method="POST" action="/save_watchlist">
+        <h2>Watchlist</h2>
+        <table  id="elements_table" class="table table-bordered" style="background-color:#ffffff;" >
+            <tr>
+                <th>Symbol</th>
+                <th>Exchange</th>
+                <th>Bid</th>
+                <th>Ask</th>
+            </tr>
+            {% if bid_asks != 0 %}
+                {% for bid_ask in bid_asks %}
+                <tr id="{{ bid_ask['symbol'] }}">
+                    <td >
+                        <input style="border: none" type="text" readonly id="symbol" name="symbol" value="{{bid_ask['symbol'] }}">
+                    </td>
+                    <td >
+                        <input style="border: none" type="text" readonly  id="exchange" name="exchange" value="{{ bid_ask['exchange'] }}">
+                    </td>
+                    <td>{{ bid_ask['data']['bid'] }}</td>
+                    <td>{{ bid_ask['data']['ask'] }}</td>
+                    <td><button onclick="remove_element('{{ bid_ask['symbol'] }}')">Remove</button></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+        <div align="center"><input class="btn btn-primary" type="submit" value="Save changes"></div>
+    </form>
+    </div>
+</body>
+</html>

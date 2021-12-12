@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Strategies</title>
+    <link rel="stylesheet" href="./static/CSS/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+<script>
+    function add_strategy(){
+        var table = document.getElementById('strategies_table');
+        var row = document.getElementById('id1');
+        var clone = row.cloneNode(true);
+        clone.style = 'display:true;'
+        table.appendChild(clone);
+    }
+
+    function remove_strategy(obj) {
+
+        var row = obj.parentNode.parentNode.rowIndex;
+        document.getElementById("strategies_table").deleteRow(row);
+    }
+
+    function strat_toggle(obj){
+        obj.value = obj.value==='ON' ? 'OFF' : 'ON'
+        obj.className = obj.value==='ON' ?  "button btn-success" : 'button btn-danger'
+        var rowId = obj.parentNode.parentNode.rowIndex;
+        document.getElementsByName('activate_btn')[rowId-1].value = obj.value
+        //alert(act[rowId-1].value+' '+rowId)
+        if (obj.value === 'ON'){
+            var message = rowId + ' Is on';
+            var strategy_type = document.getElementsByName('strategy_type');
+            var binance_element = document.getElementsByName('elements');
+            var balance_pcd = document.getElementsByName('balance_pcd');
+            var time_frame = document.getElementsByName('timeframe');
+            var take_profit = document.getElementsByName('tp');
+            var stop_loss = document.getElementsByName('sl');
+
+            //var ele1 = document.getElementById('balance_pcd');
+            var row = document.getElementById('strategies_table')[rowId];
+            alert(balance_pcd[rowId-1].value+'\n'+binance_element[rowId-1].value);
+        }
+    }
+
+    function add_additional_params(obj){
+
+    }
+</script>
+<div class="topnav">
+        <a href="/home">Home</a>
+        <a href="/watchlist_component">WatchList</a>
+        <a class="active" href="/strategies_component">Strategies</a>
+</div>
+<br>
+<div class="container">
+<button class="btn btn-primary" onclick="add_strategy()">Add Strategy</button>
+<a href="/"><button type="button" class="btn btn-primary" name="'back" value="back">Back</button></a>
+</div>
+<br>
+<div class="container" style="background-color:#E7E9EB;">
+
+    <form action="/save_strategies" name="strategy_form" id="strategy_form" method="POST">
+        <input type="submit" class="btn btn-primary">
+        <h2>Strategies</h2>
+
+        <table id="strategies_table" class="table table-bordered" style="background-color:#ffffff;" >
+
+            <tr>
+                <th>Strategy Type</th>
+                <th>Element</th>
+                <th>TimeFrame</th>
+                <th>Balance %</th>
+                <th>Take Profit</th>
+                <th>Stop Loss</th>
+                <th>Parameters</th>
+                <th>Activation</th>
+                <th>Delete</th>
+            </tr>
+            <tr id="id1" style="display:none;">
+                <td align="center">
+                    <select name="strategy_type">
+                        <option value="Technical">Technical</option>
+                        <option value="Breakout">Breakout</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <select name="elements" id="elements"><option value="BTCUSDT_binance">BTCUSDT</option><option value="ETHUSDT_binance">ETHUSDT</option><option value="BCHUSDT_binance">BCHUSDT</option><option value="XRPUSDT_binance">XRPUSDT</option><option value="EOSUSDT_binance">EOSUSDT</option><option value="LTCUSDT_binance">LTCUSDT</option><option value="TRXUSDT_binance">TRXUSDT</option><option value="ETCUSDT_binance">ETCUSDT</option><option value="LINKUSDT_binance">LINKUSDT</option><option value="XLMUSDT_binance">XLMUSDT</option><option value="ADAUSDT_binance">ADAUSDT</option><option value="XMRUSDT_binance">XMRUSDT</option><option value="DASHUSDT_binance">DASHUSDT</option><option value="ZECUSDT_binance">ZECUSDT</option><option value="XTZUSDT_binance">XTZUSDT</option><option value="BNBUSDT_binance">BNBUSDT</option><option value="ATOMUSDT_binance">ATOMUSDT</option><option value="ONTUSDT_binance">ONTUSDT</option><option value="IOTAUSDT_binance">IOTAUSDT</option><option value="BATUSDT_binance">BATUSDT</option><option value="VETUSDT_binance">VETUSDT</option><option value="NEOUSDT_binance">NEOUSDT</option><option value="QTUMUSDT_binance">QTUMUSDT</option><option value="IOSTUSDT_binance">IOSTUSDT</option><option value="THETAUSDT_binance">THETAUSDT</option><option value="ALGOUSDT_binance">ALGOUSDT</option><option value="ZILUSDT_binance">ZILUSDT</option><option value="KNCUSDT_binance">KNCUSDT</option><option value="ZRXUSDT_binance">ZRXUSDT</option><option value="COMPUSDT_binance">COMPUSDT</option><option value="OMGUSDT_binance">OMGUSDT</option><option value="DOGEUSDT_binance">DOGEUSDT</option><option value="SXPUSDT_binance">SXPUSDT</option><option value="KAVAUSDT_binance">KAVAUSDT</option><option value="BANDUSDT_binance">BANDUSDT</option><option value="RLCUSDT_binance">RLCUSDT</option><option value="WAVESUSDT_binance">WAVESUSDT</option><option value="MKRUSDT_binance">MKRUSDT</option><option value="SNXUSDT_binance">SNXUSDT</option><option value="DOTUSDT_binance">DOTUSDT</option><option value="DEFIUSDT_binance">DEFIUSDT</option><option value="YFIUSDT_binance">YFIUSDT</option><option value="BALUSDT_binance">BALUSDT</option><option value="CRVUSDT_binance">CRVUSDT</option><option value="TRBUSDT_binance">TRBUSDT</option><option value="YFIIUSDT_binance">YFIIUSDT</option><option value="RUNEUSDT_binance">RUNEUSDT</option><option value="SUSHIUSDT_binance">SUSHIUSDT</option><option value="SRMUSDT_binance">SRMUSDT</option><option value="BZRXUSDT_binance">BZRXUSDT</option><option value="EGLDUSDT_binance">EGLDUSDT</option><option value="SOLUSDT_binance">SOLUSDT</option><option value="ICXUSDT_binance">ICXUSDT</option><option value="STORJUSDT_binance">STORJUSDT</option><option value="BLZUSDT_binance">BLZUSDT</option><option value="UNIUSDT_binance">UNIUSDT</option><option value="AVAXUSDT_binance">AVAXUSDT</option><option value="FTMUSDT_binance">FTMUSDT</option><option value="HNTUSDT_binance">HNTUSDT</option><option value="ENJUSDT_binance">ENJUSDT</option><option value="FLMUSDT_binance">FLMUSDT</option><option value="TOMOUSDT_binance">TOMOUSDT</option><option value="RENUSDT_binance">RENUSDT</option><option value="KSMUSDT_binance">KSMUSDT</option><option value="NEARUSDT_binance">NEARUSDT</option><option value="AAVEUSDT_binance">AAVEUSDT</option><option value="FILUSDT_binance">FILUSDT</option><option value="RSRUSDT_binance">RSRUSDT</option><option value="LRCUSDT_binance">LRCUSDT</option><option value="MATICUSDT_binance">MATICUSDT</option><option value="OCEANUSDT_binance">OCEANUSDT</option><option value="CVCUSDT_binance">CVCUSDT</option><option value="BELUSDT_binance">BELUSDT</option><option value="CTKUSDT_binance">CTKUSDT</option><option value="AXSUSDT_binance">AXSUSDT</option><option value="ALPHAUSDT_binance">ALPHAUSDT</option><option value="ZENUSDT_binance">ZENUSDT</option><option value="SKLUSDT_binance">SKLUSDT</option><option value="GRTUSDT_binance">GRTUSDT</option><option value="BNTUSDT_binance">BNTUSDT</option><option value="1INCHUSDT_binance">1INCHUSDT</option><option value="UNFIUSDT_binance">UNFIUSDT</option><option value="BTCBUSD_binance">BTCBUSD</option><option value="AKROUSDT_binance">AKROUSDT</option><option value="CHZUSDT_binance">CHZUSDT</option><option value="SANDUSDT_binance">SANDUSDT</option><option value="ANKRUSDT_binance">ANKRUSDT</option><option value="LUNAUSDT_binance">LUNAUSDT</option><option value="BTSUSDT_binance">BTSUSDT</option><option value="LITUSDT_binance">LITUSDT</option><option value="DODOUSDT_binance">DODOUSDT</option><option value="REEFUSDT_binance">REEFUSDT</option><option value="RVNUSDT_binance">RVNUSDT</option><option value="SFPUSDT_binance">SFPUSDT</option><option value="XEMUSDT_binance">XEMUSDT</option><option value="BTCSTUSDT_binance">BTCSTUSDT</option><option value="COTIUSDT_binance">COTIUSDT</option><option value="CHRUSDT_binance">CHRUSDT</option><option value="MANAUSDT_binance">MANAUSDT</option><option value="ALICEUSDT_binance">ALICEUSDT</option><option value="HBARUSDT_binance">HBARUSDT</option><option value="ONEUSDT_binance">ONEUSDT</option><option value="LINAUSDT_binance">LINAUSDT</option><option value="STMXUSDT_binance">STMXUSDT</option><option value="DENTUSDT_binance">DENTUSDT</option><option value="BTTUSDT_binance">BTTUSDT</option><option value="CELRUSDT_binance">CELRUSDT</option><option value="HOTUSDT_binance">HOTUSDT</option><option value="MTLUSDT_binance">MTLUSDT</option><option value="OGNUSDT_binance">OGNUSDT</option><option value="NKNUSDT_binance">NKNUSDT</option><option value="SCUSDT_binance">SCUSDT</option><option value="DGBUSDT_binance">DGBUSDT</option><option value="1000SHIBUSDT_binance">1000SHIBUSDT</option><option value="ICPUSDT_binance">ICPUSDT</option><option value="BAKEUSDT_binance">BAKEUSDT</option><option value="GTCUSDT_binance">GTCUSDT</option><option value="ETHBUSD_binance">ETHBUSD</option><option value="BTCDOMUSDT_binance">BTCDOMUSDT</option><option value="KEEPUSDT_binance">KEEPUSDT</option><option value="TLMUSDT_binance">TLMUSDT</option><option value="MASKUSDT_binance">MASKUSDT</option><option value="BNBBUSD_binance">BNBBUSD</option><option value="ADABUSD_binance">ADABUSD</option><option value="DOGEBUSD_binance">DOGEBUSD</option><option value="XRPBUSD_binance">XRPBUSD</option><option value="IOTXUSDT_binance">IOTXUSDT</option><option value="AUDIOUSDT_binance">AUDIOUSDT</option><option value="RAYUSDT_binance">RAYUSDT</option><option value="C98USDT_binance">C98USDT</option><option value="ATAUSDT_binance">ATAUSDT</option><option value="SOLBUSD_binance">SOLBUSD</option><option value="FTTUSDT_binance">FTTUSDT</option><option value="FTTBUSD_binance">FTTBUSD</option><option value="DYDXUSDT_binance">DYDXUSDT</option><option value="1000XECUSDT_binance">1000XECUSDT</option><option value="GALAUSDT_binance">GALAUSDT</option><option value="BTCUSDT_211231_binance">BTCUSDT_211231</option><option value="ETHUSDT_211231_binance">ETHUSDT_211231</option><option value="CELOUSDT_binance">CELOUSDT</option><option value="ARUSDT_binance">ARUSDT</option><option value="KLAYUSDT_binance">KLAYUSDT</option><option value="ARPAUSDT_binance">ARPAUSDT</option><option value="NUUSDT_binance">NUUSDT</option><option value="CTSIUSDT_binance">CTSIUSDT</option><option value="LPTUSDT_binance">LPTUSDT</option><option value="ENSUSDT_binance">ENSUSDT</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <select name="timeframe"><option value="1m">1m</option><option value="5m">5m</option><option value="15m">15m</option><option value="30m">30m</option><option value="1h">1h</option><option value="4h">4h</option>
+                    </select>
+                </td>
+
+                <td>
+                    <div class="col-xs-2">
+                    <input type="number" step="0.01" name="balance_pcd" id="balance_pcd">
+                    </div>
+                </td>
+                <td>
+                    <input type="number" step="0.01" name="tp" size="4">
+                </td>
+                <td>
+                    <input type="number" step="0.01" name="sl" size="4">
+                </td>
+                <td align="center">
+                    <input type="button" name="additional_params" value="Params" onclick="add_additional_params(this)">
+                </td>
+                <td align="center">
+                    <input type="hidden" value="OFF" name = "activate_btn">
+                    <input type="button" class="button btn-danger" name="activate" value="OFF" onclick="strat_toggle(this)">
+                </td>
+                <td align="center">
+                    <input type="button" class="button btn-warning" name="delete" onclick="remove_strategy(this)" value="Delete">
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center">
+                    <select name="strategy_type">
+                        <option value="Technical" selected>Technical</option>
+                        <option value="Breakout">Breakout</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <select name="elements" id="elements">
+                            <option value="BTCUSDT_binance" selected>BTCUSDT</option><option value="ETHUSDT_binance" >ETHUSDT</option><option value="BCHUSDT_binance" >BCHUSDT</option><option value="XRPUSDT_binance" >XRPUSDT</option><option value="EOSUSDT_binance" >EOSUSDT</option><option value="LTCUSDT_binance" >LTCUSDT</option><option value="TRXUSDT_binance" >TRXUSDT</option><option value="ETCUSDT_binance" >ETCUSDT</option><option value="LINKUSDT_binance" >LINKUSDT</option><option value="XLMUSDT_binance" >XLMUSDT</option><option value="ADAUSDT_binance" >ADAUSDT</option><option value="XMRUSDT_binance" >XMRUSDT</option><option value="DASHUSDT_binance" >DASHUSDT</option><option value="ZECUSDT_binance" >ZECUSDT</option><option value="XTZUSDT_binance" >XTZUSDT</option><option value="BNBUSDT_binance" >BNBUSDT</option><option value="ATOMUSDT_binance" >ATOMUSDT</option><option value="ONTUSDT_binance" >ONTUSDT</option><option value="IOTAUSDT_binance" >IOTAUSDT</option><option value="BATUSDT_binance" >BATUSDT</option><option value="VETUSDT_binance" >VETUSDT</option><option value="NEOUSDT_binance" >NEOUSDT</option><option value="QTUMUSDT_binance" >QTUMUSDT</option><option value="IOSTUSDT_binance" >IOSTUSDT</option><option value="THETAUSDT_binance" >THETAUSDT</option><option value="ALGOUSDT_binance" >ALGOUSDT</option><option value="ZILUSDT_binance" >ZILUSDT</option><option value="KNCUSDT_binance" >KNCUSDT</option><option value="ZRXUSDT_binance" >ZRXUSDT</option><option value="COMPUSDT_binance" >COMPUSDT</option><option value="OMGUSDT_binance" >OMGUSDT</option><option value="DOGEUSDT_binance" >DOGEUSDT</option><option value="SXPUSDT_binance" >SXPUSDT</option><option value="KAVAUSDT_binance" >KAVAUSDT</option><option value="BANDUSDT_binance" >BANDUSDT</option><option value="RLCUSDT_binance" >RLCUSDT</option><option value="WAVESUSDT_binance" >WAVESUSDT</option><option value="MKRUSDT_binance" >MKRUSDT</option><option value="SNXUSDT_binance" >SNXUSDT</option><option value="DOTUSDT_binance" >DOTUSDT</option><option value="DEFIUSDT_binance" >DEFIUSDT</option><option value="YFIUSDT_binance" >YFIUSDT</option><option value="BALUSDT_binance" >BALUSDT</option><option value="CRVUSDT_binance" >CRVUSDT</option><option value="TRBUSDT_binance" >TRBUSDT</option><option value="YFIIUSDT_binance" >YFIIUSDT</option><option value="RUNEUSDT_binance" >RUNEUSDT</option><option value="SUSHIUSDT_binance" >SUSHIUSDT</option><option value="SRMUSDT_binance" >SRMUSDT</option><option value="BZRXUSDT_binance" >BZRXUSDT</option><option value="EGLDUSDT_binance" >EGLDUSDT</option><option value="SOLUSDT_binance" >SOLUSDT</option><option value="ICXUSDT_binance" >ICXUSDT</option><option value="STORJUSDT_binance" >STORJUSDT</option><option value="BLZUSDT_binance" >BLZUSDT</option><option value="UNIUSDT_binance" >UNIUSDT</option><option value="AVAXUSDT_binance" >AVAXUSDT</option><option value="FTMUSDT_binance" >FTMUSDT</option><option value="HNTUSDT_binance" >HNTUSDT</option><option value="ENJUSDT_binance" >ENJUSDT</option><option value="FLMUSDT_binance" >FLMUSDT</option><option value="TOMOUSDT_binance" >TOMOUSDT</option><option value="RENUSDT_binance" >RENUSDT</option><option value="KSMUSDT_binance" >KSMUSDT</option><option value="NEARUSDT_binance" >NEARUSDT</option><option value="AAVEUSDT_binance" >AAVEUSDT</option><option value="FILUSDT_binance" >FILUSDT</option><option value="RSRUSDT_binance" >RSRUSDT</option><option value="LRCUSDT_binance" >LRCUSDT</option><option value="MATICUSDT_binance" >MATICUSDT</option><option value="OCEANUSDT_binance" >OCEANUSDT</option><option value="CVCUSDT_binance" >CVCUSDT</option><option value="BELUSDT_binance" >BELUSDT</option><option value="CTKUSDT_binance" >CTKUSDT</option><option value="AXSUSDT_binance" >AXSUSDT</option><option value="ALPHAUSDT_binance" >ALPHAUSDT</option><option value="ZENUSDT_binance" >ZENUSDT</option><option value="SKLUSDT_binance" >SKLUSDT</option><option value="GRTUSDT_binance" >GRTUSDT</option><option value="BNTUSDT_binance" >BNTUSDT</option><option value="1INCHUSDT_binance" >1INCHUSDT</option><option value="UNFIUSDT_binance" >UNFIUSDT</option><option value="BTCBUSD_binance" >BTCBUSD</option><option value="AKROUSDT_binance" >AKROUSDT</option><option value="CHZUSDT_binance" >CHZUSDT</option><option value="SANDUSDT_binance" >SANDUSDT</option><option value="ANKRUSDT_binance" >ANKRUSDT</option><option value="LUNAUSDT_binance" >LUNAUSDT</option><option value="BTSUSDT_binance" >BTSUSDT</option><option value="LITUSDT_binance" >LITUSDT</option><option value="DODOUSDT_binance" >DODOUSDT</option><option value="REEFUSDT_binance" >REEFUSDT</option><option value="RVNUSDT_binance" >RVNUSDT</option><option value="SFPUSDT_binance" >SFPUSDT</option><option value="XEMUSDT_binance" >XEMUSDT</option><option value="BTCSTUSDT_binance" >BTCSTUSDT</option><option value="COTIUSDT_binance" >COTIUSDT</option><option value="CHRUSDT_binance" >CHRUSDT</option><option value="MANAUSDT_binance" >MANAUSDT</option><option value="ALICEUSDT_binance" >ALICEUSDT</option><option value="HBARUSDT_binance" >HBARUSDT</option><option value="ONEUSDT_binance" >ONEUSDT</option><option value="LINAUSDT_binance" >LINAUSDT</option><option value="STMXUSDT_binance" >STMXUSDT</option><option value="DENTUSDT_binance" >DENTUSDT</option><option value="BTTUSDT_binance" >BTTUSDT</option><option value="CELRUSDT_binance" >CELRUSDT</option><option value="HOTUSDT_binance" >HOTUSDT</option><option value="MTLUSDT_binance" >MTLUSDT</option><option value="OGNUSDT_binance" >OGNUSDT</option><option value="NKNUSDT_binance" >NKNUSDT</option><option value="SCUSDT_binance" >SCUSDT</option><option value="DGBUSDT_binance" >DGBUSDT</option><option value="1000SHIBUSDT_binance" >1000SHIBUSDT</option><option value="ICPUSDT_binance" >ICPUSDT</option><option value="BAKEUSDT_binance" >BAKEUSDT</option><option value="GTCUSDT_binance" >GTCUSDT</option><option value="ETHBUSD_binance" >ETHBUSD</option><option value="BTCDOMUSDT_binance" >BTCDOMUSDT</option><option value="KEEPUSDT_binance" >KEEPUSDT</option><option value="TLMUSDT_binance" >TLMUSDT</option><option value="MASKUSDT_binance" >MASKUSDT</option><option value="BNBBUSD_binance" >BNBBUSD</option><option value="ADABUSD_binance" >ADABUSD</option><option value="DOGEBUSD_binance" >DOGEBUSD</option><option value="XRPBUSD_binance" >XRPBUSD</option><option value="IOTXUSDT_binance" >IOTXUSDT</option><option value="AUDIOUSDT_binance" >AUDIOUSDT</option><option value="RAYUSDT_binance" >RAYUSDT</option><option value="C98USDT_binance" >C98USDT</option><option value="ATAUSDT_binance" >ATAUSDT</option><option value="SOLBUSD_binance" >SOLBUSD</option><option value="FTTUSDT_binance" >FTTUSDT</option><option value="FTTBUSD_binance" >FTTBUSD</option><option value="DYDXUSDT_binance" >DYDXUSDT</option><option value="1000XECUSDT_binance" >1000XECUSDT</option><option value="GALAUSDT_binance" >GALAUSDT</option><option value="BTCUSDT_211231_binance" >BTCUSDT_211231</option><option value="ETHUSDT_211231_binance" >ETHUSDT_211231</option><option value="CELOUSDT_binance" >CELOUSDT</option><option value="ARUSDT_binance" >ARUSDT</option><option value="KLAYUSDT_binance" >KLAYUSDT</option><option value="ARPAUSDT_binance" >ARPAUSDT</option><option value="NUUSDT_binance" >NUUSDT</option><option value="CTSIUSDT_binance" >CTSIUSDT</option><option value="LPTUSDT_binance" >LPTUSDT</option><option value="ENSUSDT_binance" >ENSUSDT</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <select name="timeframe">
+                            <option value="1m">1m</option><option value="5m">5m</option><option value="15m">15m</option><option value="30m">30m</option><option value="1h">1h</option><option value="4h">4h</option>
+                    </select>
+                </td>
+                <td>
+                    <input class="form-control" type="number" step="0.01" name="balance_pcd" id="balance_pcd" value="">
+                </td>
+                <td>
+
+                    <input class="form-control" type="number" step="0.01" name="tp" value="" size="4">
+
+                </td>
+                <td>
+                    <input class="form-control" type="number" step="0.01" name="sl" value="" size="4">
+                </td>
+                <td align="center">
+                    <input type="button" name="additional_params" value="Params" onclick="add_additional_params(this)">
+                </td>
+                <td align="center">
+
+
+                    <input type="button" class="button btn-danger" name="activate" value="OFF" onclick="strat_toggle(this)">
+                    <input type="hidden" value="OFF" name = "activate_btn">
+
+                </td>
+                <td align="center">
+                    <input type="button" class="button btn-warning" name="delete" onclick="remove_strategy(this)" value="Delete">
+                </td>
+            </tr>
+
+        </table>
+    </form>
+    <a href="/"><button type="button" class="btn btn-info" name="'back" value="back">Back</button></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="./static/CSS/login.css">
+    <style>
+        .centered {
+            position: absolute;
+            top: 45%;
+            left: 20%;
+            transform: translate( -15%, -60%);
+            color: ghostwhite;
+            font-size: 60px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrap">
+	<div class="login-html">
+        {% if errorType == 'login' or errorType == 'none' %}
+		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+        {% elif errorType == 'signup' or errorType == 'signup_already_exists' %}
+        <input id="tab-1" type="radio" name="tab" class="sign-in" ><label for="tab-1" class="tab">Sign In</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up" checked><label for="tab-2" class="tab">Sign Up</label>
+        {% endif %}
+        <div class="login-form">
+			<div class="sign-in-htm">
+                <form id="login" action="/validate_login" method="POST">
+				<div class="group">
+					<label for="user" class="label">Username</label>
+					<input id="user" name="user" type="text" class="input" required>
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Password</label>
+					<input id="pass" name="pass" type="password" class="input" data-type="password" required>
+				</div>
+				<div class="group">
+                    <br>
+                    {% if retry == True and errorType == 'login' %}
+                        <label class="error">Incorrect username or password</label>
+                    {% endif %}
+                    <input type="hidden" name="login">
+				</div>
+				<div class="group">
+					<input type="submit" class="button" value="Sign In">
+				</div>
+                </form>
+				<div class="hr"></div>
+				<div class="foot-lnk">
+					<a href="#forgot">Forgot Password?</a>
+				</div>
+			</div>
+			<div class="sign-up-htm">
+                <form id="signup" action="/validate_login" method="POST">
+				<div class="group">
+					<label for="user" class="label">Username</label>
+					<input id="user" name="user" type="text" class="input" required>
+				</div>
+				<div class="group">
+					<label for="pass1" class="label">Password</label>
+					<input id="pass1" name="pass1" type="password" class="input" data-type="password" required>
+				</div>
+				<div class="group">
+					<label for="pass2" class="label">Repeat Password</label>
+					<input id="pass2" name="pass2" type="password" class="input" data-type="password" required>
+				</div>
+				<div class="group">
+					<label for="email" class="label">Email Address</label>
+					<input id="email" name="email" type="text" class="input" required>
+                    {% if retry == True and errorType == 'signup' %}
+                        <label class="error">Password doesn't match</label>
+                    {% elif retry == True and errorType == 'signup_already_exists' %}
+                        <label class="error">Username already exists!!</label>
+                    {% endif %}
+                    <input type="hidden" name="signup">
+				</div>
+				<div class="group">
+					<input type="submit" class="button" value="Sign Up">
+				</div>
+				</form>
+                <div class="hr"></div>
+
+				<div class="foot-lnk">
+                    <label for="tab-1">Already Member?</label>
+				</div>
+			</div>
+        </div>
+
+	</div>
+</div>
+<div class="login-wrap1">
+    <div class="centered"><p>Crypto Trading Bot</p></div>
+</div>
+</body>
+</html>

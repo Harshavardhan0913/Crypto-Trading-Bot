@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./static/CSS/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function verify_password(){
+            if((document.getElementById('old_password').value!='')&&(document.getElementById('new_password').value!='')){
+                if((document.getElementById('new_password').value == document.getElementById('confirm_password').value)){
+                    document.getElementById('update_password_btn').disabled = false;
+                    document.getElementById('small_text').style.visibility = 'hidden';
+                }
+                else {
+                    document.getElementById('small_text').style.visibility = 'visible';
+                    document.getElementById('update_password_btn').disabled = true;
+                }
+
+            }
+            else {
+                document.getElementById('update_password_btn').disabled = true;
+
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="topnav">
+        <a href="/home">Home</a>
+        <a href="/watchlist_component">WatchList</a>
+        <a href="/strategies_component">Strategies</a>
+        <a href="/logging_component">Logs</a>
+        <a href="/trades_component">Trades</a>
+        <div class="topnav-right">
+            <a class="active"  href="/profile">Profile</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <h1><b>Profile</b></h1>
+        <form name="profile_form" id="profile_form" action="/save_profile" method="POST">
+            <div style="background-color:#E7E9EB;width: 80%;">
+            <table id="profile_table" class="table table-bordered" style="background-color:#ffffff;">
+            <tr>
+            {% for d in login_data %}
+                <td width="20%">Username</td>
+                <td width="80%"><input class="form-control" type="text" name="Email" id="Email" value="{{ d[0] }}" readonly></td>
+            </tr>
+
+            <tr>
+            <td>Email Address</td>
+            <td><input class="form-control" type="text" name="Email" id="Email" value="{{ d[2] }}" readonly></td>
+            {% endfor %}
+            </tr>
+            <tr>
+                <td>Binance Public Key</td>
+                <td><input class="form-control" type="text" name="binance_public_key" id="binance_public_key" value="{{ keys_data['binance_public_key'] }}" readonly></td>
+            </tr>
+            <tr>
+                <td>Binance Private Key</td>
+                <td><input class="form-control" type="password" name="binance_private_key" id="binance_private_key" value="{{ keys_data['binance_private_key'] }}" readonly></td>
+            </tr>
+            <tr>
+                <td>Bitmex Public Key</td>
+                <td><input class="form-control" type="text" name="bitmex_public_key" id="bitmex_public_key" value="{{ keys_data['bitmex_public_key'] }}" readonly></td>
+            </tr>
+            <tr>
+                <td>Bitmex Private Key</td>
+                <td><input class="form-control" type="password" name="bitmex_private_key" id="bitmex_private_key" value="{{ keys_data['bitmex_private_key'] }}" readonly></td>
+            </tr>
+            </table>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Save">
+            <a href="/"><button type="button" class="btn btn-info" name="'logout" value="logout">Logout</button></a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_pwd">Change Password</button>
+        </form>
+    </div>
+    <div class="modal fade"id="modal_pwd">
+        <div class="modal-dialog" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <table>
+                            <tr>
+                                <td>Old password</td>
+                                <td><input type="password" name="old_password" id="old_password" onkeyup="verify_password()"></td>
+                            </tr>
+                            <tr>
+                                <td>New password</td>
+                                <td><input type="password" name="new_password" id="new_password" onkeyup="verify_password()"></td>
+                            </tr>
+                            <tr>
+                                <td>Confirm password</td>
+                                <td><input type="password" name="confirm_password" id="confirm_password" onkeyup="verify_password()"></td>
+                            </tr>
+                        </table>
+                        <small id="small_text" style="visibility: hidden; color: crimson" >Passwords doesn't match</small>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" id="update_password_btn" value="Update Password" disabled>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Strategies</title>
+    <link rel="stylesheet" href="./static/CSS/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<script>
+    function add_strategy(){
+        var table = document.getElementById('strategies_table');
+        var row = document.getElementById('id1');
+        var clone = row.cloneNode(true);
+        clone.style = 'display:true;'
+        table.appendChild(clone);
+    }
+
+    function remove_strategy(obj) {
+
+        var row = obj.parentNode.parentNode.rowIndex;
+        document.getElementById("strategies_table").deleteRow(row);
+    }
+
+    function strat_toggle(obj){
+        obj.value = obj.value==='ON' ? 'OFF' : 'ON'
+        obj.className = obj.value==='ON' ?  "button btn-success" : 'button btn-danger'
+        var rowId = obj.parentNode.parentNode.rowIndex;
+        document.getElementsByName('activate_btn')[rowId-1].value = obj.value
+        //alert(act[rowId-1].value+' '+rowId)
+        if (obj.value === 'ON'){
+            var message = rowId + ' Is on';
+            var strategy_type = document.getElementsByName('strategy_type');
+            var binance_element = document.getElementsByName('elements');
+            var balance_pcd = document.getElementsByName('balance_pcd');
+            var time_frame = document.getElementsByName('timeframe');
+            var take_profit = document.getElementsByName('tp');
+            var stop_loss = document.getElementsByName('sl');
+
+            //var ele1 = document.getElementById('balance_pcd');
+
+            var row = document.getElementById('strategies_table')[rowId];
+            alert('Strategy is turned on');
+        }
+        else {
+            alert('Strategy is turned off');
+        }
+    }
+
+    function add_additional_params(obj){
+        
+    }
+</script>
+<div class="topnav">
+        <a href="/home">Home</a>
+        <a href="/watchlist_component">WatchList</a>
+        <a class="active" href="/strategies_component">Strategies</a>
+        <a href="/logging_component">Logs</a>
+        <a href="/trades_component">Trades</a>
+        <div class="topnav-right">
+            <a href="/profile">Profile</a>
+            <a href="/about">About</a>
+        </div>
+</div>
+<br>
+<div class="container">
+<button class="btn btn-primary" onclick="add_strategy()">Add Strategy</button>
+</div>
+<br>
+<div class="container" style="background-color:#E7E9EB;">
+
+    <form action="/save_strategies" name="strategy_form" id="strategy_form" method="POST">
+
+        <h2>Strategies</h2>
+
+        <table id="strategies_table" class="table table-bordered" style="background-color:#ffffff;" >
+            <tr>
+                <th>Strategy Type</th>
+                <th>Element</th>
+                <th>TimeFrame</th>
+                <th>Balance %</th>
+                <th>Take Profit</th>
+                <th>Stop Loss</th>
+                <th>Parameters</th>
+                <th>Activation</th>
+                <th>Delete</th>
+            </tr>
+            <tr id="id1" style="display:none;">
+                <td align="center">
+                    <select name="strategy_type">
+                        <option value="Technical">Technical</option>
+                        <option value="Breakout">Breakout</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <select name="elements" id="elements">
+                        {% for element in binance.contracts.keys()%}
+                        <option value="{{ element+'_'+'binance' }}">{{ element }}_Binance</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td align="center">
+                    <select name="timeframe">
+                        {% for tf in timeframes %}
+                        <option value="{{ tf }}">{{ tf }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input class="form-control" type="number" step="0.01" name="balance_pcd" id="balance_pcd">
+                </td>
+                <td>
+                    <input class="form-control" type="number" step="0.01" name="tp">
+                </td>
+                <td>
+                    <input class="form-control" type="number" step="0.01" name="sl">
+                </td>
+                <td align="center">
+                    <input type="button" name="additional_params" value="Params" onclick="add_additional_params(this)">
+                </td>
+                <td align="center">
+                    <input type="hidden" value="OFF" name = "activate_btn">
+                    <input type="button" class="button btn-danger" name="activate" value="OFF" onclick="strat_toggle(this)">
+                </td>
+                <td align="center">
+                    <input type="button" class="button btn-warning" name="delete" onclick="remove_strategy(this)" value="Delete">
+                </td>
+            </tr>
+            {% for i in range(table_length) %}
+                <tr>
+                    <td align="center">
+                        <select name="strategy_type">
+                            {% if table_data['strategy_type'][i] == 'Technical' %}
+                            <option value="Technical" selected>Technical</option>
+                            <option value="Breakout">Breakout</option>
+                            {% elif table_data['strategy_type'][i] == 'Breakout' %}
+                            <option value="Technical" >Technical</option>
+                            <option value="Breakout" selected>Breakout</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td align="center">
+                        <select name="elements" id="elements">
+                            {% for element in binance.contracts.keys()%}
+                                {% if element in table_data['element'][i] %}
+                                <option value="{{ element+'_'+'binance' }}" selected>{{ element }}_Binance</option>
+                                {% else %}
+                                <option value="{{ element+'_'+'binance' }}" >{{ element }}_Binance</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td align="center">
+                        <select name="timeframe">
+                            {% for tf in timeframes %}
+                                {% if table_data['timeframe'][i]     == tf %}
+                                <option value="{{ tf }}" selected>{{ tf }}</option>
+                                {% else %}
+                                <option value="{{ tf }}">{{ tf }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input class="form-control" type="number" step="0.01" name="balance_pcd" id="balance_pcd" value="{{ table_data['balance_pct'][i] }}">
+                    </td>
+                    <td>
+                        <input class="form-control" type="number" step="0.01" name="tp" value="{{ table_data['take_profit'][i] }}">
+                    </td>
+                    <td>
+                        <input class="form-control" type="number" step="0.01" name="sl" value="{{ table_data['stop_loss'][i] }}">
+                    </td>
+                    <td align="center">
+                        <input type="button" name="additional_params" value="Params" onclick="add_additional_params(this)">
+                    </td>
+                    <td align="center">
+
+                        {% if table_data['activate'][i] == 'ON' %}
+                        <input type="button" class="button btn-success" name="activate" value="{{ table_data['activate'][i] }}" onclick="strat_toggle(this)">
+                        <input type="hidden" value="ON" name = "activate_btn">
+                        {% else %}
+                        <input type="button" class="button btn-danger" name="activate" value="{{ table_data['activate'][i] }}" onclick="strat_toggle(this)">
+                        <input type="hidden" value="OFF" name = "activate_btn">
+                        {% endif %}
+                    </td>
+                    <td align="center">
+                        <input type="button" class="button btn-warning" name="delete" onclick="remove_strategy(this)" value="Delete">
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+        <div align="center"><input type="submit" class="btn btn-primary" value="Save changes"></div>
+    </form>
+</div>
+</body>
+</html>

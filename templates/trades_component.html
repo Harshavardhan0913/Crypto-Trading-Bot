@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trades</title>
+    <link rel="stylesheet" href="./static/CSS/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <script>
+        function autoRefresh() {
+            window.location = window.location.href;
+        }
+        setInterval('autoRefresh()', 5000);
+    </script>
+    <div class="topnav">
+        <a href="/home">Home</a>
+        <a href="/watchlist_component">WatchList</a>
+        <a href="/strategies_component">Strategies</a>
+        <a href="/logging_component">Logs</a>
+        <a class="active" href="/trades_component">Trades</a>
+        <div class="topnav-right">
+            <a href="/profile">Profile</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+<br>
+<div  class="container" style="background-color:#E7E9EB;">
+    <h2>Trades</h2>
+    <table class="table table-bordered" style="background-color:#ffffff;">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Symbol</th>
+                <th>Exchange</th>
+                <th>Strategy</th>
+                <th>Side</th>
+                <th>Quantity</th>
+                <th>Pnl</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        {% for index, strat in client.strategies.items() %}
+        {% for trade in strat.trades %}
+        <tr>
+            <td>{{ trade.time_of_execution }}</td>
+            <td>{{ trade.contract.symbol  }}</td>
+            <td>{{ trade.contract.exchange.capitalize() }}</td>
+            <td>{{ trade.strategy.capitalize() }}</td>
+            <td>{{ trade.side }}</td>
+            <td>{{ trade.quantity }}</td>
+            <td>{{ trade.pnl }}</td>
+            <td>{{ trade.status.capitalize() }}</td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
